@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import Dropdown from 'react-dropdown';
 import { TideContext } from '../context/TideContext';
-
 import './App.css';
 import 'react-dropdown/style.css';
+import { TideTable } from './TideTable';
 
 function App() {
   const options = ['Pacifica', 'Santa Cruz'];
   const [location, setLocation] = useState('');
 
-  const { extremesPoint, seaLevelPoint, getTideData } = useContext(TideContext);
+  const { loading, getTideData } = useContext(TideContext);
 
   // Run getTideData onMount.
   // TODO: Add dependecy list when dropdown option is implemented.
@@ -18,12 +18,7 @@ function App() {
   return (
     <div className="App">
       <Dropdown options={options} onChange={setLocation} value={location} placeholder="Select an option" />
-      <p>
-        {JSON.stringify(extremesPoint)}
-      </p>
-      <p>
-        {JSON.stringify(seaLevelPoint)}
-      </p>
+      {loading? <p>Loading data...</p>: <TideTable/>}
     </div>
   );
 }

@@ -1,47 +1,59 @@
 import React, { createContext, useState } from "react";
-import { extremesPointSampleData, seaLevelPointSampleData } from "../api/sampleData";   
+import { extremesPointSampleData, seaLevelPointSampleData } from "../api/sampleData";
 // import { apiKey } from "../api/config";
 
 export const TideContext = createContext();
 
 export const TideContextProvider = props => {
-    // const lat = 37.6328;
-    // const lng = -122.4901;
-    // const date = new Date();
-    // const dateString = date.toISOString().slice(0, 10);
+  // const lat = 37.6328;
+  // const lng = -122.4901;
+  // const date = new Date();
+  // const dateString = date.toISOString().slice(0, 10);
 
-    const [extremesPoint, setExtremesPoint] = useState({});
-    const [seaLevelPoint, setSeaLevelPoint] = useState({});
+  const [extremesPoint, setExtremesPoint] = useState({});
+  const [seaLevelPoint, setSeaLevelPoint] = useState({});
 
-    const getTideData = () => {
-        setExtremesPoint(extremesPointSampleData);
-        setSeaLevelPoint(seaLevelPointSampleData);
+  const [loading, setLoading] = useState(true);
 
-        // Commented out to reserve API usage.
-        /*
-        fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
-            headers: {
-                'Authorization': apiKey
-            }
-        }).then((response) => response.json()).then((jsonData) => {
-            console.log(jsonData);
-            setExtremesPoint(jsonData);
-        });
-        
-        fetch(`https://api.stormglass.io/v2/tide/sea-level/point?lat=${lat}&lng=${lng}`, {
-            headers: {
-                'Authorization': apiKey
-            }
-        }).then((response) => response.json()).then((jsonData) => {
-            console.log(jsonData);
-            setSeaLevelPoint(jsonData);
-        });
-        */
-    };
+  const getTideData = () => {
+    console.log('getTideData');
+    console.log(extremesPointSampleData);
+    setExtremesPoint(extremesPointSampleData);
+    setSeaLevelPoint(seaLevelPointSampleData);
 
-    return (
-        <TideContext.Provider value={{ extremesPoint, seaLevelPoint, getTideData }}>
-            {props.children}
-        </TideContext.Provider>
-    );
+    // Commented out to reserve API usage.
+    /*
+    // Retrieve information about high and low tide for a single coordinate.
+    // If nothing is specified, the returned values will be in relative to Mean Sea Level - MSL.
+    // Timestamp in UTC
+    fetch(`https://api.stormglass.io/v2/tide/extremes/point?lat=${lat}&lng=${lng}`, {
+        headers: {
+            'Authorization': apiKey
+        }
+    }).then((response) => response.json()).then((jsonData) => {
+        console.log(jsonData);
+        setExtremesPoint(jsonData);
+    });
+    
+    // Retrieve the sea level given in meters hour by hour for a single coordinate.
+    // If nothing is specified the returned values will be in relative to Mean Sea Level - MSL.
+    //Timestamp in UTC
+    fetch(`https://api.stormglass.io/v2/tide/sea-level/point?lat=${lat}&lng=${lng}`, {
+        headers: {
+            'Authorization': apiKey
+        }
+    }).then((response) => response.json()).then((jsonData) => {
+        console.log(jsonData);
+        setSeaLevelPoint(jsonData);
+    });
+    */
+
+    setLoading(false);
+  };
+
+  return (
+    <TideContext.Provider value={{ loading, extremesPoint, seaLevelPoint, getTideData }}>
+      {props.children}
+    </TideContext.Provider>
+  );
 };
