@@ -1,11 +1,7 @@
 import React, { useMemo, useContext } from "react";
 import { useTable } from "react-table";
-import { TideContext } from "../context/TideContext";
 
 export const TideTable = props => {
-  const { extremesPoint } = useContext(TideContext);
-
-  console.log(extremesPoint);
 
   const columns = useMemo(
     () => [
@@ -26,7 +22,7 @@ export const TideTable = props => {
   );
 
   const data = useMemo(
-    () => extremesPoint.data,
+    () => props.data,
     []
   );
 

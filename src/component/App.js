@@ -3,7 +3,7 @@ import Dropdown from 'react-dropdown';
 import { TideContext } from '../context/TideContext';
 import './App.css';
 import 'react-dropdown/style.css';
-import { TideTable } from './TideTable';
+import { TidePanel } from './TidePanel';
 
 function App() {
   const options = ['Pacifica', 'Santa Cruz'];
@@ -18,7 +18,7 @@ function App() {
   return (
     <div className="App">
       <Dropdown options={options} onChange={setLocation} value={location} placeholder="Select an option" />
-      {loading? <p>Loading data...</p>: <TideTable/>}
+      {loading? <p>Loading data...</p>: <TidePanel/>}
     </div>
   );
 }

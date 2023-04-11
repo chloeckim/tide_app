@@ -13,14 +13,36 @@ export const TideContextProvider = props => {
   const [extremesPoint, setExtremesPoint] = useState({});
   const [seaLevelPoint, setSeaLevelPoint] = useState({});
 
+  const [extremesPointByDate, setExtremesPointByDate] = useState({});
+  const [seaLevelPointByDate, setSeaLevelPointByDate] = useState({});
+
   const [loading, setLoading] = useState(true);
 
-  const getTideData = () => {
-    console.log('getTideData');
-    console.log(extremesPointSampleData);
-    setExtremesPoint(extremesPointSampleData);
-    setSeaLevelPoint(seaLevelPointSampleData);
+  const groupTideDataByDate = () => {
+    setExtremesPointByDate(extremesPointSampleData.data.reduce((groups, extremePoint) => {
+      const date = extremePoint.time.split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(extremePoint);
+      return groups;
+    }, {}));
 
+    console.log(extremesPointByDate);
+
+    setSeaLevelPointByDate(seaLevelPointSampleData.data.reduce((groups, extremePoint) => {
+      const date = extremePoint.time.split('T')[0];
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date].push(extremePoint);
+      return groups;
+    }, {}));
+
+    console.log(seaLevelPointByDate);
+  }
+
+  const getTideData = () => {
     // Commented out to reserve API usage.
     /*
     // Retrieve information about high and low tide for a single coordinate.
@@ -48,11 +70,16 @@ export const TideContextProvider = props => {
     });
     */
 
+    setExtremesPoint(extremesPointSampleData);
+    setSeaLevelPoint(seaLevelPointSampleData);
+
+    groupTideDataByDate();
+
     setLoading(false);
   };
 
   return (
-    <TideContext.Provider value={{ loading, extremesPoint, seaLevelPoint, getTideData }}>
+    <TideContext.Provider value={{ loading, extremesPoint, seaLevelPoint, extremesPointByDate, seaLevelPointByDate, getTideData }}>
       {props.children}
     </TideContext.Provider>
   );
