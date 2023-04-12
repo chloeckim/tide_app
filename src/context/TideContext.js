@@ -28,8 +28,6 @@ export const TideContextProvider = props => {
       return groups;
     }, {}));
 
-    console.log(extremesPointByDate);
-
     setSeaLevelPointByDate(seaLevelPointSampleData.data.reduce((groups, extremePoint) => {
       const date = extremePoint.time.split('T')[0];
       if (!groups[date]) {
@@ -38,8 +36,6 @@ export const TideContextProvider = props => {
       groups[date].push(extremePoint);
       return groups;
     }, {}));
-
-    console.log(seaLevelPointByDate);
   }
 
   const getTideData = () => {

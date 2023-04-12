@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from "react";
+import React, { useMemo } from "react";
 import { useTable } from "react-table";
 
 export const TideTable = props => {
@@ -10,12 +10,12 @@ export const TideTable = props => {
         accessor: 'type',
       },
       {
-        Header: 'Height',
-        accessor: 'height',
-      },
-      {
         Header: 'Time',
         accessor: 'time',
+      },
+      {
+        Header: 'Height',
+        accessor: 'height',
       },
     ],
     []
@@ -76,5 +76,5 @@ export const TideTable = props => {
         </tbody>
       </table>
     </div>
-  )
+  );
 }
