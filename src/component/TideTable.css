@@ -1,0 +1,20 @@
+table.tide-table {
+  border-spacing: 0;
+  border: 1px solid black;
+  flex-grow: 1;
+}
+
+.tide-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.tide-table th, .tide-table td {
+  margin: 0;
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.tide-table th:last-child, .tide-table td:last-child {
+  border-right: 0;
+}

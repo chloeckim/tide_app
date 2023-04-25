@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { useTable } from "react-table";
+import './TideTable.css';
 
 export const TideTable = props => {
 
@@ -33,7 +34,7 @@ export const TideTable = props => {
       });
       return formatted;
     },
-    []
+    [props.data]
   );
 
   const tableInstance = useTable({ columns, data });
@@ -47,44 +48,42 @@ export const TideTable = props => {
   } = tableInstance;
 
   return (
-    <div className="tide-table">
-      <table {...getTableProps()}>
-        <thead>
-          {
-            headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
+    <table className="tide-table" {...getTableProps()}>
+      <thead>
+        {
+          headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {
+                headerGroup.headers.map(column => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render('Header')}
+                  </th>
+                ))
+              }
+            </tr>
+          ))
+        }
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {
+          rows.map(row => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
                 {
-                  headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render('Header')}
-                    </th>
-                  ))
+                  row.cells.map(cell => {
+                    return (
+                      <td {...cell.getCellProps()}>
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  })
                 }
               </tr>
-            ))
-          }
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {
-            rows.map(row => {
-              prepareRow(row)
-              return (
-                <tr {...row.getRowProps()}>
-                  {
-                    row.cells.map(cell => {
-                      return (
-                        <td {...cell.getCellProps()}>
-                          {cell.render('Cell')}
-                        </td>
-                      )
-                    })
-                  }
-                </tr>
-              )
-            })
-          }
-        </tbody>
-      </table>
-    </div>
+            )
+          })
+        }
+      </tbody>
+    </table>
   );
 }
