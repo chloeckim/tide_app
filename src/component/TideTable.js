@@ -22,7 +22,17 @@ export const TideTable = props => {
   );
 
   const data = useMemo(
-    () => props.data,
+    () => {
+      let formatted = [];
+      props.data.forEach((item) => {
+        formatted.push({
+          "height": item.height.toFixed(2),
+          "time": item.time.toLocaleTimeString('en-US'),
+          "type": item.type
+        });
+      });
+      return formatted;
+    },
     []
   );
 

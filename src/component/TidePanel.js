@@ -4,19 +4,25 @@ import { TideTable } from "./TideTable";
 import { TideChart } from "./TideChart";
 
 export const TidePanel = props => {
-  const { extremesPointByDate, seaLevelPointByDate } = useContext(TideContext);
+  const { groupedExtremesPoint, groupedSeaLevelPoint } = useContext(TideContext);
 
   const tideTables = [];
   const tideCharts = [];
-  for (const [key, value] of Object.entries(extremesPointByDate)) {
-    tideTables.push(<td><TideTable date={key} data={value}/></td>);
-    tideCharts.push(<td><TideChart date={key} data={seaLevelPointByDate[key]}/></td>)
+
+  for (const [key, value] of Object.entries(groupedExtremesPoint)) {
+    tideTables.push(<td key={key}><TideTable data={value}/></td>);
+  }
+
+  for (const [key, value] of Object.entries(groupedSeaLevelPoint)) {
+    tideCharts.push(<td key={key}><TideChart data={value}/></td>)
   }
 
   return (
-    <tbody className="tide-panel">
-      <tr>{tideCharts}</tr>
-      <tr>{tideTables}</tr>
-    </tbody>
+    <table className="tide-panel">
+      <tbody>
+        <tr>{tideCharts}</tr>
+        <tr>{tideTables}</tr>
+      </tbody>
+    </table>
   )
 }

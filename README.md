@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Getting Started with Tide App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+This project is a practice project for me to apply my learnings for React and JavaScript.
+
+This Project shows tide data for a given location. Tide data comes from [stormglass.io].
+
+To run the project, you must get the api key from [stormglass.io] and create your own src > api > config.js file. Also need to uncomment API calls in src > context > TideContext.js and remove the usage of sample data.
 
 ## Available Scripts
 

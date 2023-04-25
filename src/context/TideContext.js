@@ -2,6 +2,21 @@ import React, { createContext, useState } from "react";
 import { extremesPointSampleData, seaLevelPointSampleData } from "../api/sampleData";
 // import { apiKey } from "../api/config";
 
+class ExtremesPoint {
+  constructor(data) {
+    this.height = data.height * 3.2808;
+    this.time = new Date(data.time);
+    this.type = data.type;
+  }
+}
+
+class SeaLevelPoint {
+  constructor(data) {
+    this.time = new Date(data.time);
+    this.sg = data.sg * 3.2808;
+  }
+}
+
 export const TideContext = createContext();
 
 export const TideContextProvider = props => {
@@ -10,30 +25,29 @@ export const TideContextProvider = props => {
   // const date = new Date();
   // const dateString = date.toISOString().slice(0, 10);
 
-  const [extremesPoint, setExtremesPoint] = useState({});
-  const [seaLevelPoint, setSeaLevelPoint] = useState({});
-
-  const [extremesPointByDate, setExtremesPointByDate] = useState({});
-  const [seaLevelPointByDate, setSeaLevelPointByDate] = useState({});
+  const [groupedExtremesPoint, setGroupedExtremesPoint] = useState({});
+  const [groupedSeaLevelPoint, setGroupedSeaLevelPoint] = useState({});
 
   const [loading, setLoading] = useState(true);
 
-  const groupTideDataByDate = () => {
-    setExtremesPointByDate(extremesPointSampleData.data.reduce((groups, extremePoint) => {
-      const date = extremePoint.time.split('T')[0];
+  const formatData = (extremesPointData, seaLevelPointData) => {
+    setGroupedExtremesPoint(extremesPointData.reduce((groups, data) => {
+      const datetime = new Date(data.time);
+      const date = datetime.toDateString();
       if (!groups[date]) {
         groups[date] = [];
       }
-      groups[date].push(extremePoint);
+      groups[date].push(new ExtremesPoint(data));
       return groups;
     }, {}));
 
-    setSeaLevelPointByDate(seaLevelPointSampleData.data.reduce((groups, extremePoint) => {
-      const date = extremePoint.time.split('T')[0];
+    setGroupedSeaLevelPoint(seaLevelPointData.reduce((groups, data) => {
+      const datetime = new Date(data.time);
+      const date = datetime.toDateString();
       if (!groups[date]) {
         groups[date] = [];
       }
-      groups[date].push(extremePoint);
+      groups[date].push(new SeaLevelPoint(data));
       return groups;
     }, {}));
   }
@@ -66,16 +80,13 @@ export const TideContextProvider = props => {
     });
     */
 
-    setExtremesPoint(extremesPointSampleData);
-    setSeaLevelPoint(seaLevelPointSampleData);
-
-    groupTideDataByDate();
+    formatData(extremesPointSampleData.data, seaLevelPointSampleData.data);
 
     setLoading(false);
   };
 
   return (
-    <TideContext.Provider value={{ loading, extremesPoint, seaLevelPoint, extremesPointByDate, seaLevelPointByDate, getTideData }}>
+    <TideContext.Provider value={{ loading, groupedExtremesPoint, groupedSeaLevelPoint, getTideData }}>
       {props.children}
     </TideContext.Provider>
   );
